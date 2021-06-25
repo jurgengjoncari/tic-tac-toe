@@ -1,3 +1,6 @@
+let mark = "X";
+
+
 // CREATE TABLE
 let table = document.querySelector("table");
 for (let i = 0; i < 3; i++) {
@@ -6,6 +9,17 @@ for (let i = 0; i < 3; i++) {
 	for (let j = 0; j < 3; j++) {
 		let cell = row.insertCell();
 		cell.className = j;
+	
+		// ADD EVENT-LISTENER
+		cell.addEventListener("click", function () {
+			cell.innerText = mark;
+			
+			if (mark == "X") {
+				mark = "O";
+			} else {
+				mark = "X";
+			}
+		})
 	}
 }
 
