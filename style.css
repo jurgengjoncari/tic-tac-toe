@@ -1,0 +1,25 @@
+td {
+	border: solid 1px;
+	width: 60px;
+	height: 60px;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+td.\30 {
+	border-left: none;
+}
+
+tr.\30 > td {
+	border-top: none;
+}
+
+tr.\32 > td {
+	border-bottom: none;
+}
+
+td.\32 {
+	border-right: none;
+}
