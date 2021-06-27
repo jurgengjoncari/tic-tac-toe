@@ -3,9 +3,7 @@ let winner = undefined;
 
 // CREATE TABLE
 let table = document.querySelector("table tbody");
-let rows = table.rows;
 let cells = document.getElementsByTagName("td");
-cells = Array.from(cells);
 
 for (let i = 0; i < 3; i++) {
 	let row = table.insertRow();
@@ -18,29 +16,27 @@ for (let i = 0; i < 3; i++) {
 		cell.addEventListener("click", function () {
 			if (this.textContent == "") {	
 				this.textContent = mark;
-					
+				
+				if (isWinner(this)) {
+					alert(`${this.textContent} won!`)	
+				}
 				if (mark == "X") {
 					mark = "O";
 				} else {
 					mark = "X";
 				}
 			}
-			
-			if (isWinner(this)) {
-				// replace with return
-				alert(`${this.textContent} won!`)
-			};
 		})
-		// uncomment after making it a function
-		// let cellsArray = Array.from(cells)
+		let cellsArray = Array.from(cells);
 
-		// if (cellsArray.every(cell => cell.textContent != "")) {
-		// 	return "Draw"
-		// }
+		if (cellsArray.every(cell => cell.textContent != "")) {
+		 	alert("Draw");
+		}
 	}
 }
 
 function isWinner(thisCell) {
+	let rows = table.rows;
 	function areAllEqual(siblings) {
 		if (siblings.every(mark => mark == thisCell.textContent)) {
 			return true;
@@ -51,29 +47,40 @@ function isWinner(thisCell) {
 
 	let horizontalSiblings = Array.from(thisRow.children, cell => cell.textContent);
 
-	let h = areAllEqual(horizontalSiblings);
+	let hasHorisontal = areAllEqual(horizontalSiblings);
 	
 	// Vertical row
+	cells = Array.from(cells);
+
 	let thisColumn = cells.filter(cell => cell.cellIndex == thisCell.cellIndex);
 
 	let verticaltalSiblings = thisColumn.map(cell => cell.textContent)
 
-	let v = areAllEqual(verticaltalSiblings);
+	let hasVertical = areAllEqual(verticaltalSiblings);
 
 	// Diagonal rows
-	// let mainDiagonalSiblings = [];
-	// let antidiagonalSiblings = [];
-	// for (row of rows) {
-	// 	for (cell of row.cells) {
-	// 		if (cell.cellIndex == row.rowIndex) {
-	// 			mainDiagonalSiblings.push(cell.textContent);
-	// 		} else if (cell.cellIndex == 3 - row.rowIndex) {
-	// 			antidiagonalSiblings.push(cell.textContent);
-	// 		}
-	// 	}
-	// }
+	let mainDiagonal = [];
+	let antidiagonal = [];
 
-	// winner = (identifyWinner(mainDiagonalSiblings) || identifyWinner(antidiagonalSiblings));
-	// return winner;
-	return h || v;
+	for (row of rows) {
+	 	for (cell of row.cells) {
+	 		if (cell.cellIndex == row.rowIndex) {
+	 			mainDiagonal.push(cell);
+	 		} else if (cell.cellIndex == 3 - row.rowIndex) {
+	 			antidiagonal.push(cell);
+	 		}
+	 	}
+	}
+
+	let diagonals = mainDiagonal || antidiagonal;
+
+	let hasDiagonal;
+
+	if (thisCell in diagonals) {
+		hasDiagonal = (areAllEqual(mainDiagonal) || areAllEqual(antidiagonal));
+	}
+
+	let has3in1row = hasHorisontal || hasVertical || hasDiagonal;
+ 
+	return has3in1row;
 }
