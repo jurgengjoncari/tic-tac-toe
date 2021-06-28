@@ -1,15 +1,23 @@
 let mark = "X";
-let winner = undefined;
 
 // CREATE TABLE
 let table = document.querySelector("table tbody");
+
 let cells = document.getElementsByTagName("td");
+
+function emptyCells() {
+	for (cell of cells) {
+		cell.textContent = "";
+	}
+}
 
 for (let i = 0; i < 3; i++) {
 	let row = table.insertRow();
+	
 	row.className = i;
 	for (let j = 0; j < 3; j++) {
 		let cell = row.insertCell();
+	
 		cell.className = j;
 	
 		// ADD EVENT-LISTENER
@@ -18,20 +26,26 @@ for (let i = 0; i < 3; i++) {
 				this.textContent = mark;
 				
 				if (isWinner(this)) {
-					alert(`${this.textContent} won!`)	
-				}
-				if (mark == "X") {
-					mark = "O";
+					alert(`${this.textContent} won!`);
+					
+					emptyCells();
 				} else {
-					mark = "X";
+					let cellsArray = Array.from(cells);
+
+					if (cellsArray.every(cell => cell.textContent != "")) {
+						alert("Draw");
+
+						emptyCells();
+					} else {
+						if (mark == "X") {
+							mark = "O";
+						} else {
+							mark = "X";
+						}	
+					}
 				}
 			}
 		})
-		let cellsArray = Array.from(cells);
-
-		if (cellsArray.every(cell => cell.textContent != "")) {
-		 	alert("Draw");
-		}
 	}
 }
 
@@ -59,25 +73,18 @@ function isWinner(thisCell) {
 	let hasVertical = areAllEqual(verticaltalSiblings);
 
 	// Diagonal rows
-	let mainDiagonal = [];
-	let antidiagonal = [];
-
-	for (row of rows) {
-	 	for (cell of row.cells) {
-	 		if (cell.cellIndex == row.rowIndex) {
-	 			mainDiagonal.push(cell);
-	 		} else if (cell.cellIndex == 3 - row.rowIndex) {
-	 			antidiagonal.push(cell);
-	 		}
-	 	}
+	let diagonals = {
+		main: cells.filter(cell => cell.cellIndex == cell.parentElement.rowIndex),
+		anti: cells.filter(cell => cell.cellIndex == 2 - cell.parentElement.rowIndex)
 	}
-
-	let diagonals = mainDiagonal || antidiagonal;
 
 	let hasDiagonal;
 
-	if (thisCell in diagonals) {
-		hasDiagonal = (areAllEqual(mainDiagonal) || areAllEqual(antidiagonal));
+	if (diagonals.main.includes(thisCell) || diagonals.anti.includes(thisCell)) {
+		diagonals.mainSiblings = Array.from(diagonals.main, cell => cell.textContent);
+		diagonals.antiSiblings = Array.from(diagonals.anti, cell => cell.textContent);
+
+		hasDiagonal = (areAllEqual(diagonals.mainSiblings) || areAllEqual(diagonals.antiSiblings));
 	}
 
 	let has3in1row = hasHorisontal || hasVertical || hasDiagonal;
