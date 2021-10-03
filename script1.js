@@ -2,8 +2,8 @@ let Game = (function () {
     let board = Array.from(Array(3), () => [undefined, undefined, undefined]);
     
     let diagonals = {
-        left: board.map((row, i) => row.map((cell, j) => i = j)),
-        right: board.map((row, i) => row.map((cell, j) => i = 2 - j))
+        left: board.map((row, i) => row.find((cell, j) => i = j)),
+        right: board.map((row, i) => row.find((cell, j) => i = 2 - j))
     };
 
     function getRows(position) {
@@ -14,22 +14,23 @@ let Game = (function () {
     };
 
     board.oneRowFilled = function(mark, position) {
-        let rows = [
+        rows = [
             getRows(position).horizontal, 
             getRows(position).vertical, 
             diagonals.left, 
             diagonals.right
         ];
 
-        let isFilled = (row) => row.every(cell => cell == mark)
-        let areFilled = (rows) => rows.map(row => isFilled(row));
+        let isMarked = (row) => row.every(cell => cell == mark);
+        let areMarked = (rows) => rows.map(row => isMarked(row));
         
-        if (areFilled(rows).some(Boolean)) return true;
+        if (areMarked(rows).some(Boolean)) return true;
         else return false;
     }
     
     board.isDraw = function () {
-        if (board.some(row => row.some(cell => cell == undefined))) return false;
+        let isEmpty = (cell) => cell === undefined;
+        if (board.some(row => row.some(isEmpty(cell)))) return false;
         else return true;
     }
 
