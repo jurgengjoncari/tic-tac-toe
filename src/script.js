@@ -1,17 +1,21 @@
 const Player = require('./player.js');
-const Gameboard = require('./gameboard.js');
+const Game = require('./game.js');
 
-let gameboard = new Gameboard;
+let game = new Game;
 let playerX = new Player("X");
 let playerO = new Player("O");
 
 let playGame = function(player) {
-    if (gameboard.gameOver()) {
-        if (gameboard.getWinner()) {
+    let winner = game.winner;
+    let draw = game.isDraw();
+
+    if (winner || draw) {
+        console.log("Game Over");
+        if (winner) {
             player.incrementScore();
             console.log(`${player.mark} is winner`);
         }
-        else if (gameboard.draw()) console.log("It's a draw");
+        else if (draw) console.log("It's a isDraw");
     }
     else {
         player = (player === playerO) ? playerX : playerO;

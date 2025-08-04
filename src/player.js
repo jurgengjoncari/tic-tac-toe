@@ -5,7 +5,7 @@ module.exports = class Player {
         this.score = 0;
     }
 
-    won = (board) => board.getWinner() === this.mark;
+    won = (board) => board.winner() === this.mark;
 
     incrementScore = () => {
         this.score++;

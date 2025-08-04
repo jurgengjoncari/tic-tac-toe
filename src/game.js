@@ -1,13 +1,15 @@
 const BOARD_SIZE = 3;
 
-module.exports = class Gameboard {
+module.exports = class Game {
     constructor(board = []) {
-        this.board = this.createBoard(board);
+        this.board = this.initializeBoard(board);
     }
 
-    createBoard(board) {
+    initializeBoard(board) {
         if (board.length > 0) return board;
-        return Array.from({length: BOARD_SIZE}, () => Array(3).fill(undefined));
+        return Array.from({length: BOARD_SIZE}, () => {
+            return Array(BOARD_SIZE).fill(undefined);
+        });
     }
 
     getLines() {
@@ -25,7 +27,7 @@ module.exports = class Gameboard {
         return lines;
     }
 
-    getWinner() {
+    get winner() {
         for (let line of this.getLines()) {
             if (line.every(cell => cell === line[0] && cell !== undefined)) {
                 return line[0]; // Return the winning mark
@@ -33,12 +35,8 @@ module.exports = class Gameboard {
         }
     }
 
-    draw() {
+    isDraw() {
         let isEmpty = (cell) => cell === undefined;
-        return !this.board.some(row => row.some(cell => isEmpty(cell))) && !this.getWinner();
-    }
-
-    gameOver() {
-        return !!this.getWinner() || this.draw();
+        return !this.board.some(row => row.some(cell => isEmpty(cell))) && !this.winner;
     }
 }
