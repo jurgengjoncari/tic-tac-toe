@@ -1,34 +1,16 @@
 const BOARD_SIZE = 3;
+const {
+    getLines,
+    initializeBoard
+} = require('./utils');
 
 module.exports = class Game {
-    constructor(board = []) {
-        this.board = this.initializeBoard(board);
-    }
-
-    initializeBoard(board) {
-        if (board.length > 0) return board;
-        return Array.from({length: BOARD_SIZE}, () => {
-            return Array(BOARD_SIZE).fill(undefined);
-        });
-    }
-
-    getLines() {
-        const lines = [];
-
-        // Rows and columns
-        for (let i = 0; i < 3; i++) {
-            lines.push(this.board[i]); // horizontal
-            lines.push(this.board.map(row => row[i])); // vertical
-        }
-
-        // Diagonals
-        lines.push(this.board.map((row, i) => row[i])); // left diagonal
-        lines.push(this.board.map((row, i) => row[2 - i])); // right diagonal
-        return lines;
+    constructor(board = undefined) {
+        this.board = board || initializeBoard(BOARD_SIZE);
     }
 
     get winner() {
-        for (let line of this.getLines()) {
+        for (const line of getLines(this.board)) {
             if (line.every(cell => cell === line[0] && cell !== undefined)) {
                 return line[0]; // Return the winning mark
             }
