@@ -57,6 +57,7 @@ export function drawX(cx, cy, offset) {
 
     group.appendChild(line1);
     group.appendChild(line2);
+    group.setAttribute("class", "mark");
 
     return group;
 }
@@ -74,6 +75,24 @@ export function drawO(cx, cy, r) {
     circle.setAttribute("stroke", "blue");
     circle.setAttribute("stroke-width", "5");
     circle.setAttribute("fill", "none");
+    circle.setAttribute("class", "mark");
 
     return circle;
+}
+
+/** * Draws a mark ('X' or 'O') in the specified cell of the SVG board.
+ * @param {Element} cell - The SVG cell element where the mark will be drawn.
+ * @param {string} value - The mark to draw ('X' or 'O').
+ */
+export function drawMark(cell, value) {
+    const x = Number(cell.getAttribute("x"));
+    const y = Number(cell.getAttribute("y"));
+    const width = Number(cell.getAttribute("width"));
+    const height = Number(cell.getAttribute("height"));
+
+    const centerX = x + width / 2;
+    const centerY = y + height / 2;
+    const offset = Math.min(width, height) * 0.3;
+
+    return value === 'X' ? drawX(centerX, centerY, offset) : drawO(centerX, centerY, offset);
 }

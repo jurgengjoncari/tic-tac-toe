@@ -1,47 +1,45 @@
 import {Player} from './player.js';
 import {Game} from './game.js';
-import {
-    drawO,
-    drawX
-} from "./utils.js";
+import {drawMark} from "./utils.js";
 
 let game = new Game;
 let playerX = new Player("X");
 let playerO = new Player("O");
 // X starts the game
 let currentPlayer = playerX;
+let resetPending = false;
 
 const svg = document.getElementById('board');
 
-function drawMark(row, col, value) {
-    const cell = svg.querySelector(`rect[data-row="${row}"][data-col="${col}"]`);
-    if (!cell) return;
-
-    const x = Number(cell.getAttribute("x"));
-    const y = Number(cell.getAttribute("y"));
-    const width = Number(cell.getAttribute("width"));
-    const height = Number(cell.getAttribute("height"));
-
-    const centerX = x + width / 2;
-    const centerY = y + height / 2;
-    const offset = Math.min(width, height) * 0.3;
-
-    const mark = value === 'X' ? drawX(centerX, centerY, offset) : drawO(centerX, centerY, offset);
-
-    svg.appendChild(mark);
+function resetGame() {
+    game = new Game();
+    svg.querySelectorAll('.mark').forEach(mark => mark.remove()); // Remove existing marks
 }
 
 function handleCellClick(event) {
-    const row = Number(event.target.dataset.row);
-    const col = Number(event.target.dataset.col);
-    if (game.board[row][col] !== undefined) return; // Cell already occupied
-
-    game.board[row][col] = currentPlayer.mark;
-    drawMark(row, col, currentPlayer.mark);
-    if (game.winner || game.isDraw()) {
-        setTimeout(() => alert(game.winner ? `${currentPlayer.mark} wins!` : "Draw!"), 10);
+    if (resetPending) {
+        resetGame();
+        resetPending = false;
         return;
     }
+
+    const cell = event.target;
+    const row = Number(cell.dataset.row);
+    const col = Number(cell.dataset.col);
+
+    if (game.board[row][col]) return; // Cell already occupied
+    game.board[row][col] = currentPlayer.mark;
+
+    // Draw the mark in the clicked cell
+    svg.appendChild(drawMark(cell, currentPlayer.mark));
+
+    if (game.winner || game.isDraw()) {
+        setTimeout(() => {
+            alert(game.winner ? `${game.winner} wins!` : "Draw!");
+            resetPending = true;
+        }, 10);
+    }
+
     currentPlayer = (currentPlayer.mark === 'X') ? playerO : playerX;
 }
 
