@@ -96,3 +96,15 @@ export function drawMark(cell, value) {
 
     return value === 'X' ? drawX(centerX, centerY, offset) : drawO(centerX, centerY, offset);
 }
+
+/** * Draws a preview mark ('X' or 'O') in the specified cell of the SVG board.
+ * The preview mark is semi-transparent to indicate it's a preview.
+ * @param {Element} cell - The SVG cell element where the preview mark will be drawn.
+ * @param {string} value - The mark to preview ('X' or 'O').
+ * @returns {Element} The SVG element representing the preview mark.
+ */
+export function drawPreviewMark(cell, value) {
+    const mark = drawMark(cell, value);
+    mark.setAttribute('opacity', '0.3');
+    return mark;
+}

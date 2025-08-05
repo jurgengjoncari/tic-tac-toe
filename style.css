@@ -16,3 +16,7 @@ svg {
 #board {
 	max-width: 100vmin;
 }
+
+#board rect {
+	cursor: pointer;
+}
