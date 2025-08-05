@@ -1,5 +1,5 @@
-const Game = require("../src/game");
-
+import {Game} from "../src/game.js";
+import {describe, it, expect} from 'vitest';
 describe('Win', () => {
     it('horizontal', () => {
         const BOARD = [

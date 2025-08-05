@@ -1,12 +1,17 @@
-const BOARD_SIZE = 3;
-const {
+import {
     getLines,
     initializeBoard
-} = require('./utils');
+} from './utils.js';
 
-module.exports = class Game {
-    constructor(board = undefined) {
-        this.board = board || initializeBoard(BOARD_SIZE);
+const BOARD_SIZE = 3;
+
+export class Game {
+    constructor(board = null) {
+        if (Array.isArray(board) && board.length > 1) {
+            this.board = board;
+        } else {
+            this.board = initializeBoard(BOARD_SIZE);
+        }
     }
 
     get winner() {

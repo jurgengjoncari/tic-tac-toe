@@ -4,7 +4,7 @@
   "description": "This is the Tic-tac-toe game.",
   "main": "src/script.js",
   "scripts": {
-    "test": "jest"
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,8 @@
     "url": "https://github.com/jurgengjoncari/tic-tac-toe/issues"
   },
   "homepage": "https://github.com/jurgengjoncari/tic-tac-toe#readme",
+  "type": "module",
   "devDependencies": {
-    "jest": "^29.7.0"
+    "vitest": "^3.2.4"
   }
 }

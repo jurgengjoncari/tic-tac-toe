@@ -1,18 +1,9 @@
 /**
- * @file Helper functions for the Tic Tac Toe game.
- * @module helpers
- */
-module.exports = {
-    getLines,
-    initializeBoard
-};
-
-/**
  * Gets all lines (rows, columns, and diagonals) from the Tic Tac Toe board.
  * @param {Array} board - The Tic Tac Toe board represented as a 2D array.
  * @returns {Array} An array containing all lines from the board.
  */
-function getLines(board) {
+export function getLines(board) {
     const lines = [];
 
     // Rows and columns
@@ -32,9 +23,57 @@ function getLines(board) {
  * @param {number} BOARD_SIZE - The size of the board (default is 3).
  * @returns {Array} The initialized board.
  */
-function initializeBoard(BOARD_SIZE = 3) {
+export function initializeBoard(BOARD_SIZE = 3) {
     return Array.from({length: BOARD_SIZE}, () => {
         return Array(BOARD_SIZE).fill(undefined);
     });
 }
 
+/** * Draws an 'X' mark on the SVG board at the specified coordinates.
+ * @param {number} cx - The x-coordinate of the center of the 'X'.
+ * @param {number} cy - The y-coordinate of the center of the 'X'.
+ * @param {number} offset - The offset from the center to the ends of the lines.
+ */
+export function drawX(cx, cy, offset) {
+    const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+    const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line1.setAttribute("x1", cx - offset);
+    line1.setAttribute("y1", cy - offset);
+    line1.setAttribute("x2", cx + offset);
+    line1.setAttribute("y2", cy + offset);
+    line1.setAttribute("stroke", "red");
+    line1.setAttribute("stroke-width", "5");
+    line1.setAttribute("stroke-linecap", "round");
+
+    const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line2.setAttribute("x1", cx + offset);
+    line2.setAttribute("y1", cy - offset);
+    line2.setAttribute("x2", cx - offset);
+    line2.setAttribute("y2", cy + offset);
+    line2.setAttribute("stroke", "red");
+    line2.setAttribute("stroke-width", "5");
+    line2.setAttribute("stroke-linecap", "round");
+
+    group.appendChild(line1);
+    group.appendChild(line2);
+
+    return group;
+}
+
+/** * Draws an 'O' mark on the SVG board at the specified coordinates.
+ * @param {number} cx - The x-coordinate of the center of the 'O'.
+ * @param {number} cy - The y-coordinate of the center of the 'O'.
+ * @param {number} r - The radius of the circle representing the 'O'.
+ */
+export function drawO(cx, cy, r) {
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", cx);
+    circle.setAttribute("cy", cy);
+    circle.setAttribute("r", r);
+    circle.setAttribute("stroke", "blue");
+    circle.setAttribute("stroke-width", "5");
+    circle.setAttribute("fill", "none");
+
+    return circle;
+}

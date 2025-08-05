@@ -1,0 +1,18 @@
+html, body {
+	height: 100%;
+}
+
+body {
+	background-color: rgb(18, 18, 18);
+	color: white;
+	display: flex;
+	align-items: center;
+}
+
+svg {
+	margin: auto;
+}
+
+#board {
+	max-width: 100vmin;
+}
