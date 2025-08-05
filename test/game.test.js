@@ -1,4 +1,4 @@
-import {Game} from "../src/game.js";
+import {Game} from "../game.js";
 import {describe, it, expect} from 'vitest';
 describe('Win', () => {
     it('horizontal', () => {
