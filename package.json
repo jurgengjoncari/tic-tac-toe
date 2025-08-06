@@ -2,7 +2,7 @@
   "name": "tic-tac-toe",
   "version": "1.0.0",
   "description": "This is the Tic-tac-toe game.",
-  "main": "script.js",
+  "main": "src/script.js",
   "scripts": {
     "test": "vitest"
   },

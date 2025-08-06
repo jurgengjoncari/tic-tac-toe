@@ -44,14 +44,11 @@ document.querySelectorAll('#board rect').forEach(rect => {
 
     rect.addEventListener('mouseenter', (event) => {
         const cell = event.target;
-        const row = Number(cell.dataset.row);
-        const col = Number(cell.dataset.col);
+        const {row, col} = cell.dataset;
 
-        if (game.board[row][col]) return; // Cell already occupied
+        if (game.board[row][col] || resetPending) return; // Cell already occupied or game over
 
         preview = drawPreviewMark(cell, currentPlayer.mark);
-
-        // Draw a preview mark
         svg.appendChild(preview);
     });
 
